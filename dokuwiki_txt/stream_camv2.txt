@@ -1,0 +1,56 @@
+====== Stream VLC CameraV2 Raspebrry Pi ======
+
+Documentation Camera Module : https://www.raspberrypi.org/documentation/raspbian/applications/camera.md //
+\\
+
+//Sources :\\
+http://www.magdiblog.fr/divers/raspberry-pi-camera-5-facons-de-faire-du-streaming //
+http://www.recantha.co.uk/blog/?p=4165 //
+
+===== Paquets nécessaires =====
+  * raspivid
+  * vlc //(sur les machines client(s) et serveur)//
+
+
+  apt-get install raspivid vlc
+
+
+===== Commandes pour le stream =====
+(ne fonctionnent pas en root)
+
+==== Stream Live HTTP ====
+  raspivid -o - -t 8640000 -w 800 -h 600 --hflip | cvlc -vvv stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:8080}' :demux=h264
+(FIXME : Latences)
+
+==== Stream Live RTSP ====
+  raspivid -o - -t 8640000 -w 800 -h 600 --hflip | cvlc -vvv stream:///dev/stdin --sout '#rtp{sdp=rtsp://:8080/<stream_name>}' :demux=h264
+
+
+==== Script ====
+<code>
+#!/bin/bash
+
+raspivid -o - -n -t 8640000 -w 800 -h 600 --hflip -a 8 -a "RaspiCam %Y-%m-%d %X" | cvlc -vvv stream:///dev/stdin --sout '#rtp{sdp=rtsp://:8080/raspi}' :demux=h264
+</code>
+
+
+> -o : fichier de sortie ( - = aucun )\\
+> -n : pas de fenêtre de pré-visualisation  \\
+> -t : timeout, délai de 8640000 secondes (100 Jours) \\
+> -w : 800px de largeur d'image \\
+> -h : 600px de hauteur d'image \\
+> --hflip : symétrie horizontal \\
+> -a : annotation sur image de sortie (8 = date ...) \\
+
+
+===== Sur un poste client =====
+Dans le Lecteur Multimedia VLC, aller dans **Média => Ouvrir un flux réseau... :**
+== HTTP ==
+Entrer l'adresse :
+  http://<ip_server_stream>:<port>
+
+== RTSP ==
+Entrer l'adresse :
+  rtsp://<ip_server_stream>:<port>/<stream_name>
+  
+  
