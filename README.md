@@ -16,6 +16,8 @@ ___
 **`stream_http_raspi.sh`** : permet de streammer en Live par le protocol HTTP, **VLC** sera utile pour pouvoir lire le flux vidéo.  
 **`stream_rtsp_raspi.sh`** : même chose que le script utilisant HTTP, la latence est en revenche réduite.  
 
+**/!\\** Il faudra modifier certains éléments des scripts (adresse IP, ports ...) pour qu'ils soient fonctionnels.
+
 ### Utilisation
 Pour cloner le dépôt :
 
@@ -25,4 +27,16 @@ Pour lancer un script (stream RTSP en exemple):
 
     cd experiment-box/camera/
     bash stream_rtsp_raspi.sh
+
+### CLient VLC
+Pour lire le flux vidéo en utilisant [VLC](https://www.videolan.org/vlc/index.fr.html) :
+> Menu ***Media*** => ***Ouvrir un flux réseau...*** puis entrer l'adresse sous le format :
+
+    http://<ip_raspberry>:<port>
+ou
+
+    rtsp://<ip_raspberry>:<port>/<nom_flux>
+
+
+
 
