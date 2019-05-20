@@ -21,7 +21,7 @@ ___
 ### Utilisation
 Pour cloner le dépôt :
 
-    git clone https://github.com/Yalbc/experiment-box.git
+    git clone https://github.com/YA-MTP/experiment-box.git
 
 Pour lancer un script (stream RTSP en exemple):
 
